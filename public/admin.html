@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - MSÜ AI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-small">🎯</div>
+                <span>MSÜ AI</span>
+            </div>
+            <ul class="nav-menu">
+                <li onclick="navigate('dashboard')"><i class="fas fa-home"></i><span>Ana Sayfa</span></li>
+                <li onclick="navigate('student')"><i class="fas fa-tasks"></i><span>Görevlerim</span></li>
+                <li onclick="navigate('exam')"><i class="fas fa-file-alt"></i><span>Deneme</span></li>
+                <li onclick="navigate('topic')"><i class="fas fa-book"></i><span>Konu Anlatımı</span></li>
+                <li onclick="navigate('weak')"><i class="fas fa-exclamation-triangle"></i><span>Zayıf Konular</span></li>
+                <li class="active" onclick="navigate('admin')"><i class="fas fa-cog"></i><span>Admin Panel</span></li>
+            </ul>
+            <div class="sidebar-footer">
+                <button onclick="logout()" class="btn-logout"><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <header class="page-header">
+                <h1>⚙️ Admin Panel</h1>
+                <span class="admin-badge">Yönetici Erişimi</span>
+            </header>
+
+            <!-- Admin Stats -->
+            <div class="admin-stats">
+                <div class="admin-stat-card">
+                    <i class="fas fa-users"></i>
+                    <div class="admin-stat-info">
+                        <span class="admin-stat-value" id="total-users">0</span>
+                        <span class="admin-stat-label">Toplam Kullanıcı</span>
+                    </div>
+                </div>
+                <div class="admin-stat-card">
+                    <i class="fas fa-tasks"></i>
+                    <div class="admin-stat-info">
+                        <span class="admin-stat-value" id="total-tasks">0</span>
+                        <span class="admin-stat-label">Toplam Görev</span>
+                    </div>
+                </div>
+                <div class="admin-stat-card">
+                    <i class="fas fa-check-circle"></i>
+                    <div class="admin-stat-info">
+                        <span class="admin-stat-value" id="completed-tasks">0</span>
+                        <span class="admin-stat-label">Tamamlanan</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Management -->
+            <div class="admin-section">
+                <h2>👥 Kullanıcı Yönetimi</h2>
+                <div class="table-container">
+                    <table class="admin-table" id="users-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Kullanıcı Adı</th>
+                                <th>Rol</th>
+                                <th>Seviye</th>
+                                <th>XP</th>
+                                <th>Son Giriş</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dynamic -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Add Reward -->
+            <div class="admin-section">
+                <h2>🏆 Ödül Ekle</h2>
+                <div class="form-card">
+                    <form id="reward-form" class="admin-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Ödül Adı</label>
+                                <input type="text" id="reward-title" required>
+                            </div>
+                            <div class="form-group">
+                                <label>İkon (Emoji)</label>
+                                <input type="text" id="reward-icon" placeholder="🏆" maxlength="2">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Açıklama</label>
+                            <input type="text" id="reward-desc" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Gerekli XP</label>
+                            <input type="number" id="reward-xp" required min="50">
+                        </div>
+                        <button type="submit" class="btn-primary">Ödül Ekle</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- System Settings -->
+            <div class="admin-section">
+                <h2>🔧 Sistem Ayarları</h2>
+                <div class="settings-grid">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h4>Veri Yedekleme</h4>
+                            <p>Tüm kullanıcı verilerini JSON olarak indir</p>
+                        </div>
+                        <button onclick="backupData()" class="btn-secondary">
+                            <i class="fas fa-download"></i> Yedekle
+                        </button>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h4>Cache Temizle</h4>
+                            <p>Sistem önbelleğini temizle</p>
+                        </div>
+                        <button onclick="clearCache()" class="btn-danger">
+                            <i class="fas fa-trash"></i> Temizle
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Log -->
+            <div class="admin-section">
+                <h2>📋 Son Aktiviteler</h2>
+                <div class="activity-log" id="activity-log">
+                    <!-- Dynamic -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            checkAdmin();
+            loadAdminData();
+        });
+    </script>
+</body>
+</html>

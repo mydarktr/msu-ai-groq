@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSÜ AI - 7 Günde Başarı</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Login Screen -->
+        <div id="login-screen" class="screen active">
+            <div class="login-container">
+                <div class="logo-section">
+                    <div class="logo-icon">🎯</div>
+                    <h1>MSÜ AI</h1>
+                    <p>7 Günde Millî Savunma Üniversitesi</p>
+                </div>
+                
+                <div class="login-tabs">
+                    <button class="tab-btn active" onclick="switchTab('login')">Giriş</button>
+                    <button class="tab-btn" onclick="switchTab('register')">Kayıt</button>
+                </div>
+
+                <form id="login-form" class="auth-form">
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="login-username" placeholder="Kullanıcı adı" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="login-password" placeholder="Şifre" required>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Giriş Yap
+                    </button>
+                </form>
+
+                <form id="register-form" class="auth-form hidden">
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="reg-username" placeholder="Kullanıcı adı" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="reg-password" placeholder="Şifre" required>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-user-plus"></i> Kayıt Ol
+                    </button>
+                </form>
+
+                <div class="features-preview">
+                    <div class="feature-item">
+                        <i class="fas fa-brain"></i>
+                        <span>Yapay Zeka Destekli</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Zayıf Konu Analizi</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-clock"></i>
+                        <span>7 Günlük Program</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard -->
+        <div id="dashboard-screen" class="screen">
+            <nav class="sidebar">
+                <div class="sidebar-header">
+                    <div class="logo-small">🎯</div>
+                    <span>MSÜ AI</span>
+                </div>
+                
+                <ul class="nav-menu">
+                    <li class="active" onclick="navigate('dashboard')">
+                        <i class="fas fa-home"></i>
+                        <span>Ana Sayfa</span>
+                    </li>
+                    <li onclick="navigate('student')">
+                        <i class="fas fa-tasks"></i>
+                        <span>Görevlerim</span>
+                    </li>
+                    <li onclick="navigate('exam')">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Deneme</span>
+                    </li>
+                    <li onclick="navigate('topic')">
+                        <i class="fas fa-book"></i>
+                        <span>Konu Anlatımı</span>
+                    </li>
+                    <li onclick="navigate('weak')">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Zayıf Konular</span>
+                    </li>
+                    <li onclick="navigate('admin')" id="admin-nav" class="hidden">
+                        <i class="fas fa-cog"></i>
+                        <span>Admin Panel</span>
+                    </li>
+                </ul>
+
+                <div class="sidebar-footer">
+                    <div class="user-info">
+                        <div class="user-avatar" id="user-avatar">👤</div>
+                        <div class="user-details">
+                            <span id="user-name">Kullanıcı</span>
+                            <small id="user-role">Öğrenci</small>
+                        </div>
+                    </div>
+                    <button onclick="logout()" class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </nav>
+
+            <main class="main-content">
+                <!-- Countdown Banner -->
+                <div class="countdown-banner" id="countdown-banner">
+                    <div class="countdown-content">
+                        <div class="countdown-icon">⏰</div>
+                        <div class="countdown-text">
+                            <h3>MSÜ Sınavına Kalan Süre</h3>
+                            <div class="countdown-timer" id="countdown-timer">7 Gün 12 Saat 45 Dakika</div>
+                        </div>
+                    </div>
+                    <div class="countdown-urgency" id="urgency-badge">KRİTİK</div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card xp-card">
+                        <div class="stat-icon">⚡</div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="stat-xp">0</span>
+                            <span class="stat-label">XP Puanı</span>
+                        </div>
+                        <div class="stat-progress">
+                            <div class="progress-bar" id="xp-progress"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card level-card">
+                        <div class="stat-icon">🏆</div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="stat-level">1</span>
+                            <span class="stat-label">Seviye</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card streak-card">
+                        <div class="stat-icon">🔥</div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="stat-streak">0</span>
+                            <span class="stat-label">Seri</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card accuracy-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="stat-accuracy">0%</span>
+                            <span class="stat-label">Başarı</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h2>Hızlı Başlangıç</h2>
+                    <div class="action-grid">
+                        <button onclick="startDailyPlan()" class="action-card ai-generate">
+                            <div class="action-icon">🤖</div>
+                            <h3>AI Günlük Plan</h3>
+                            <p>7 günlük kişiselleştirilmiş program</p>
+                        </button>
+                        
+                        <button onclick="startQuickExam()" class="action-card exam-start">
+                            <div class="action-icon">📝</div>
+                            <h3>Hızlı Deneme</h3>
+                            <p>20 soruluk mini sınav</p>
+                        </button>
+                        
+                        <button onclick="goToWeakTopics()" class="action-card weak-focus">
+                            <div class="action-icon">🔍</div>
+                            <h3>Zayıf Konular</h3>
+                            <p>Analiz ve çalışma planı</p>
+                        </button>
+                        
+                        <button onclick="goToTopicStudy()" class="action-card topic-study">
+                            <div class="action-icon">📚</div>
+                            <h3>Konu Çalış</h3>
+                            <p>Detaylı anlatım ve taktikler</p>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Today's Tasks -->
+                <div class="today-section">
+                    <h2>Bugünkü Görevler</h2>
+                    <div id="today-tasks" class="tasks-list">
+                        <div class="empty-state">
+                            <i class="fas fa-clipboard-list"></i>
+                            <p>Henüz görev yok. AI planı oluştur!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Chart -->
+                <div class="progress-section">
+                    <h2>Haftalık İlerleme</h2>
+                    <div class="chart-container">
+                        <canvas id="progressChart"></canvas>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

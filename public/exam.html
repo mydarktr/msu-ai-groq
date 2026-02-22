@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deneme Sınavı - MSÜ AI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-small">🎯</div>
+                <span>MSÜ AI</span>
+            </div>
+            <ul class="nav-menu">
+                <li onclick="navigate('dashboard')"><i class="fas fa-home"></i><span>Ana Sayfa</span></li>
+                <li onclick="navigate('student')"><i class="fas fa-tasks"></i><span>Görevlerim</span></li>
+                <li class="active" onclick="navigate('exam')"><i class="fas fa-file-alt"></i><span>Deneme</span></li>
+                <li onclick="navigate('topic')"><i class="fas fa-book"></i><span>Konu Anlatımı</span></li>
+                <li onclick="navigate('weak')"><i class="fas fa-exclamation-triangle"></i><span>Zayıf Konular</span></li>
+            </ul>
+            <div class="sidebar-footer">
+                <button onclick="logout()" class="btn-logout"><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <!-- Exam Setup Screen -->
+            <div id="exam-setup" class="exam-section">
+                <header class="page-header">
+                    <h1>📝 MSÜ Deneme Sınavı</h1>
+                </header>
+
+                <div class="exam-config">
+                    <div class="config-card">
+                        <h2>Sınav Ayarları</h2>
+                        
+                        <div class="form-group">
+                            <label>Ders Seçimi</label>
+                            <select id="exam-subject" class="form-control">
+                                <option value="all">Tüm Dersler (Karışık)</option>
+                                <option value="Türkçe">Türkçe (Paragraf + Dil Bilgisi)</option>
+                                <option value="Matematik">Matematik</option>
+                                <option value="Geometri">Geometri</option>
+                                <option value="Fen Bilimleri">Fen Bilimleri (Fizik + Kimya + Biyoloji)</option>
+                                <option value="Sosyal Bilimler">Sosyal Bilimler (Tarih + Coğrafya + GK-GY)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Soru Sayısı</label>
+                            <div class="radio-group">
+                                <label class="radio-card">
+                                    <input type="radio" name="question-count" value="10" checked>
+                                    <span>10 Soru (Hızlı)</span>
+                                </label>
+                                <label class="radio-card">
+                                    <input type="radio" name="question-count" value="20">
+                                    <span>20 Soru (Mini)</span>
+                                </label>
+                                <label class="radio-card">
+                                    <input type="radio" name="question-count" value="40">
+                                    <span>40 Soru (Tam)</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="exam-info-box">
+                            <h3>💡 MSÜ Taktikleri</h3>
+                            <ul>
+                                <li>Her soru için ortalama 60 saniye ayırın</li>
+                                <li>Zor soruyu işaretle, sonra dön</li>
+                                <li>Şüpheli şıkları eleme yapın</li>
+                                <li>Boş bırakmayın, tahminde bulunun</li>
+                            </ul>
+                        </div>
+
+                        <button onclick="startExam()" class="btn-primary btn-large btn-full">
+                            <i class="fas fa-play"></i> Sınava Başla
+                        </button>
+                    </div>
+
+                    <!-- Previous Exams -->
+                    <div class="history-card">
+                        <h2>Önceki Sınavlarım</h2>
+                        <div id="exam-history" class="history-list">
+                            <!-- Loaded dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Exam Screen -->
+            <div id="exam-active" class="exam-section hidden">
+                <div class="exam-header">
+                    <div class="exam-progress">
+                        <span id="current-question">1</span> / <span id="total-questions">20</span>
+                    </div>
+                    <div class="exam-timer" id="exam-timer">
+                        <i class="fas fa-clock"></i> 20:00
+                    </div>
+                    <button onclick="finishExamEarly()" class="btn-finish">Sınavı Bitir</button>
+                </div>
+
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="exam-progress-bar"></div>
+                </div>
+
+                <div class="question-container" id="question-container">
+                    <!-- Question loaded here -->
+                </div>
+
+                <div class="exam-navigation">
+                    <button onclick="previousQuestion()" class="btn-nav" id="btn-prev" disabled>
+                        <i class="fas fa-chevron-left"></i> Önceki
+                    </button>
+                    <div class="question-palette" id="question-palette">
+                        <!-- Question numbers -->
+                    </div>
+                    <button onclick="nextQuestion()" class="btn-nav" id="btn-next">
+                        Sonraki <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Exam Results Screen -->
+            <div id="exam-results" class="exam-section hidden">
+                <div class="results-container">
+                    <div class="results-header">
+                        <div class="score-circle" id="score-circle">
+                            <span class="score-value" id="result-score">85</span>
+                            <span class="score-label">Puan</span>
+                        </div>
+                        <div class="results-summary">
+                            <h2>Sınav Tamamlandı! 🎉</h2>
+                            <div class="stats-row">
+                                <div class="stat-item">
+                                    <span class="stat-number" id="correct-count">17</span>
+                                    <span class="stat-label">Doğru</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number" id="wrong-count">3</span>
+                                    <span class="stat-label">Yanlış</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number" id="time-spent">18:45</span>
+                                    <span class="stat-label">Süre</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="results-actions">
+                        <button onclick="reviewExam()" class="btn-secondary">
+                            <i class="fas fa-search"></i> İncele
+                        </button>
+                        <button onclick="newExam()" class="btn-primary">
+                            <i class="fas fa-redo"></i> Yeni Sınav
+                        </button>
+                    </div>
+
+                    <div class="detailed-results" id="detailed-results">
+                        <!-- Detailed review -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            loadExamHistory();
+        });
+    </script>
+</body>
+</html>

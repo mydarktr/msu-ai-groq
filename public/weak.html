@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zayıf Konular - MSÜ AI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-small">🎯</div>
+                <span>MSÜ AI</span>
+            </div>
+            <ul class="nav-menu">
+                <li onclick="navigate('dashboard')"><i class="fas fa-home"></i><span>Ana Sayfa</span></li>
+                <li onclick="navigate('student')"><i class="fas fa-tasks"></i><span>Görevlerim</span></li>
+                <li onclick="navigate('exam')"><i class="fas fa-file-alt"></i><span>Deneme</span></li>
+                <li onclick="navigate('topic')"><i class="fas fa-book"></i><span>Konu Anlatımı</span></li>
+                <li class="active" onclick="navigate('weak')"><i class="fas fa-exclamation-triangle"></i><span>Zayıf Konular</span></li>
+            </ul>
+            <div class="sidebar-footer">
+                <button onclick="logout()" class="btn-logout"><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <header class="page-header">
+                <h1>🔍 Zayıf Konu Analizi</h1>
+                <p class="header-subtitle">Yapay zeka destekli kişiselleştirilmiş analiz</p>
+            </header>
+
+            <!-- Analysis Overview -->
+            <div class="analysis-overview">
+                <div class="overview-card warning">
+                    <div class="overview-icon">⚠️</div>
+                    <div class="overview-info">
+                        <h3>Zayıf Konu Sayısı</h3>
+                        <span class="overview-value" id="weak-count">0</span>
+                    </div>
+                </div>
+                
+                <div class="overview-card success">
+                    <div class="overview-icon">💪</div>
+                    <div class="overview-info">
+                        <h3>Güçlü Konu Sayısı</h3>
+                        <span class="overview-value" id="strong-count">0</span>
+                    </div>
+                </div>
+
+                <div class="overview-card info">
+                    <div class="overview-icon">📊</div>
+                    <div class="overview-info">
+                        <h3>Toplam Çözüm</h3>
+                        <span class="overview-value" id="total-solved">0</span>
+                    </div>
+                </div>
+
+                <div class="overview-card primary">
+                    <div class="overview-icon">🎯</div>
+                    <div class="overview-info">
+                        <h3>Genel Başarı</h3>
+                        <span class="overview-value" id="overall-rate">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weak Topics Section -->
+            <div class="weak-section">
+                <div class="section-header">
+                    <h2>🚨 Öncelikli Çalışılması Gereken Konular</h2>
+                    <button onclick="generateWeakPlan()" class="btn-primary">
+                        <i class="fas fa-magic"></i> AI Çalışma Planı Oluştur
+                    </button>
+                </div>
+                
+                <div id="weak-topics-list" class="topics-analysis-grid">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+
+            <!-- All Topics Performance -->
+            <div class="performance-section">
+                <h2>📈 Tüm Konuların Performansı</h2>
+                <div class="performance-chart-container">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+                
+                <div id="all-topics-list" class="topics-table">
+                    <!-- Table content -->
+                </div>
+            </div>
+
+            <!-- AI Recommendations -->
+            <div class="recommendations-section">
+                <h2>💡 AI Önerileri</h2>
+                <div id="ai-recommendations" class="recommendations-grid">
+                    <div class="recommendation-card">
+                        <div class="rec-icon">🎯</div>
+                        <h3>Hedef Belirleme</h3>
+                        <p>Zayıf konularında %80 başarıya ulaşmak için günde 2 saat ayır.</p>
+                    </div>
+                    <div class="recommendation-card">
+                        <div class="rec-icon">⏰</div>
+                        <h3>Zaman Yönetimi</h3>
+                        <p>Her zayıf konu için 50 dk çalışma + 10 dk mola uygula.</p>
+                    </div>
+                    <div class="recommendation-card">
+                        <div class="rec-icon">🔄</div>
+                        <h3>Tekrar Stratejisi</h3>
+                        <p>Çözdüğün yanlış soruları 24 saat sonra tekrar çöz.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            loadWeakAnalysis();
+        });
+    </script>
+</body>
+</html>
